@@ -1,8 +1,10 @@
+# Libraries
 import os
 os.system('cls')
 import pandas as pd
 import math
 
+# Default argument(mod) of the octant_identification funtion is set as 5000
 def octant_identification(mod=5000):
     try:
         df = pd.read_csv('octant_input.csv')
