@@ -1,6 +1,15 @@
-def octact_identification(mod=5000):
-###Code
+import os
+os.system('cls')
+import pandas as pd
+import math
 
+def octact_identification(mod=5000):
+    try:
+        df = pd.read_csv('octant_input.csv')
+        print(df.head())
+    except:
+        print("Error: File does not appear to exist.")
+        exit()
 
 from platform import python_version
 ver = python_version()
