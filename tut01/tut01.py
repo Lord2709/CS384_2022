@@ -3,7 +3,7 @@ os.system('cls')
 import pandas as pd
 import math
 
-def octact_identification(mod=5000):
+def octant_identification(mod=5000):
     try:
         df = pd.read_csv('octant_input.csv')
         #print(df.head())
@@ -170,5 +170,9 @@ if ver == "3.8.10":
 else:
     print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
 
-mod=5000
-octact_identification(mod)
+mod = int(input("Enter the mod value: "))
+if mod>0 and mod<=30000:
+    octant_identification(mod)
+    print("Code Compiled Successfully")
+else:
+    print("Mod value must lie in (0,30000]")
