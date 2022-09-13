@@ -30,7 +30,36 @@ def octact_identification(mod=5000):
         df2.loc[(df2["U'=U-U Avg"]<0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]<0),'Octant'] = -3
         df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 4
         df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]<0),'Octant'] = -4
-        print(df2.head())
+        #print(df2.head())
+
+        df2['Octant'] = df2['Octant'].astype('int')
+
+        count_1 = []
+        count_1_ = []
+        count_2 = []
+        count_2_ = []
+        count_3 = []
+        count_3_ = []
+        count_4 = []
+        count_4_ = []
+
+        count_1.append((df2['Octant'] == 1).value_counts()[1])
+        count_1.append(" ")
+        count_1_.append((df2['Octant'] == -1).value_counts()[1])
+        count_1_.append(" ")
+        count_2.append((df2['Octant'] == 2).value_counts()[1])
+        count_2.append(" ")
+        count_2_.append((df2['Octant'] == -2).value_counts()[1])
+        count_2_.append(" ")
+        count_3.append((df2['Octant'] == 3).value_counts()[1])
+        count_3.append(" ")
+        count_3_.append((df2['Octant'] == -3).value_counts()[1])
+        count_3_.append(" ")
+        count_4.append((df2['Octant'] == 4).value_counts()[1])
+        count_4.append(" ")
+        count_4_.append((df2['Octant'] == -4).value_counts()[1])
+        count_4_.append(" ")
+        #print(count_1,count_1_)
     except:
         print("Error: File does not appear to exist.")
         exit()
