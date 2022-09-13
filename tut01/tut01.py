@@ -83,7 +83,33 @@ def octact_identification(mod=5000):
             count_4_.append((d_f['Octant'] == -4).value_counts()[1])
             k = m 
             m = m + mod
-        print(count_4_)
+        #print(count_4_)
+
+        c_0 = [" ", " ","User Input"]
+        for i in range(n_ranges):
+            c_0.append(" ")
+    
+        c0 = []
+        c0.append("Octant ID")
+        c0.append("Overall Count")
+        c0.append(f"Mod {mod}")
+        c0.append(f"0000 - {mod}")
+        t = mod
+        u = t + mod
+        for j in range(3,n_ranges+2):
+            if u <= 30000:
+                p = 0
+                p = f"{t+1} - {u}" 
+                c0.append(p)
+                t = u
+                u = u + mod
+            else:
+                p = 0
+                p = f"{t+1} - {30000}" 
+                c0.append(p)
+                t = u
+                u = u + mod
+        print(c0)
     except:
         print("Error: File does not appear to exist.")
         exit()
