@@ -6,7 +6,15 @@ import math
 def octact_identification(mod=5000):
     try:
         df = pd.read_csv('octant_input.csv')
-        print(df.head())
+        #print(df.head())
+
+        ua = df.U.mean()
+        va = df.V.mean()
+        wa = df.W.mean()
+
+        df1 = pd.DataFrame({'U Avg':[ua],'V Avg':[va],'W Avg':[wa]})
+        df2 = pd.concat([df,df1], axis = 1)
+        print(df2.head())
     except:
         print("Error: File does not appear to exist.")
         exit()
