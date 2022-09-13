@@ -109,7 +109,55 @@ def octact_identification(mod=5000):
                 c0.append(p)
                 t = u
                 u = u + mod
-        print(c0)
+        #print(c0)
+
+        c1 = [1]
+        c1 += count_1
+
+        c2 = [-1]
+        c2 += count_1_
+
+        c3 = [2]
+        c3 += count_2
+
+        c4 = [-2]
+        c4 += count_2_
+
+        c5 = [3]
+        c5 += count_3
+
+        c6 = [-3]
+        c6 += count_3_
+
+        c7 = [4]
+        c7 += count_4
+
+        c8 = [-4]
+        c8 += count_4_
+
+        #print(c0)
+        final_count = []
+        final_count.append(c_0)
+        final_count.append(c0)
+        final_count.append(c1)
+        final_count.append(c2)
+        final_count.append(c3)
+        final_count.append(c4)
+        final_count.append(c5)
+        final_count.append(c6)
+        final_count.append(c7)
+        final_count.append(c8)
+
+        df_final = pd.DataFrame(final_count).transpose()
+        #print(df_final)
+
+        df_final_ = pd.DataFrame(df_final.values[1:], columns=df_final.iloc[0])
+        #print(df_final_)
+        
+        final = pd.concat([df2,df_final_], axis = 1)
+        #print(final.iloc[:,11:])
+
+        final.to_csv('octant_output.csv',index = False)
     except:
         print("Error: File does not appear to exist.")
         exit()
