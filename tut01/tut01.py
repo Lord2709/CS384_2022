@@ -60,6 +60,30 @@ def octact_identification(mod=5000):
         count_4_.append((df2['Octant'] == -4).value_counts()[1])
         count_4_.append(" ")
         #print(count_1,count_1_)
+
+        n = 30000
+        if n%mod == 0:
+            n_ranges = n//mod
+        else:
+            n_ranges = math.ceil(n/mod)
+
+        k = 0
+        m = mod
+        n_r = n_ranges
+        while n_r > 0:   
+            n_r -= 1
+            d_f = df2.iloc[k:m]
+            count_1.append((d_f['Octant'] == 1).value_counts()[1])
+            count_1_.append((d_f['Octant'] == -1).value_counts()[1])
+            count_2.append((d_f['Octant'] == 2).value_counts()[1])
+            count_2_.append((d_f['Octant'] == -2).value_counts()[1])
+            count_3.append((d_f['Octant'] == 3).value_counts()[1])
+            count_3_.append((d_f['Octant'] == -3).value_counts()[1])
+            count_4.append((d_f['Octant'] == 4).value_counts()[1])
+            count_4_.append((d_f['Octant'] == -4).value_counts()[1])
+            k = m 
+            m = m + mod
+        print(count_4_)
     except:
         print("Error: File does not appear to exist.")
         exit()
