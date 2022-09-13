@@ -14,6 +14,22 @@ def octact_identification(mod=5000):
 
         df1 = pd.DataFrame({'U Avg':[ua],'V Avg':[va],'W Avg':[wa]})
         df2 = pd.concat([df,df1], axis = 1)
+        #print(df2.head())
+
+        df2["U'=U-U Avg"] = df2['U'] - ua
+        df2["V'=V-V Avg"] = df2['V'] - va
+        df2["W'=W-W Avg"] = df2['W'] - wa
+        df2['Octant'] = None
+        #print(df2.head())
+
+        df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 1
+        df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]<0),'Octant'] = -1
+        df2.loc[(df2["U'=U-U Avg"]<0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 2
+        df2.loc[(df2["U'=U-U Avg"]<0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]<0),'Octant'] = -2
+        df2.loc[(df2["U'=U-U Avg"]<0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 3
+        df2.loc[(df2["U'=U-U Avg"]<0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]<0),'Octant'] = -3
+        df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 4
+        df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]<0),'Octant'] = -4
         print(df2.head())
     except:
         print("Error: File does not appear to exist.")
