@@ -10,20 +10,26 @@ def octant_identification(mod=5000):
         df = pd.read_csv('octant_input.csv')
         #print(df.head())
 
+        #(ua, va, wa) variables are used to store mean values of (U, V, W) columns
         ua = df.U.mean()
         va = df.V.mean()
         wa = df.W.mean()
 
+        # df1 variable store the data frame which contains ua, va, wa values
+        # df2 variable store the main data frame after concatenating df and df1
         df1 = pd.DataFrame({'U Avg':[ua],'V Avg':[va],'W Avg':[wa]})
         df2 = pd.concat([df,df1], axis = 1)
         #print(df2.head())
 
+        # (U', V', W') columns appended to the main data frame after subtracting (ua, va, wa) from (U, V, W)
         df2["U'=U-U Avg"] = df2['U'] - ua
         df2["V'=V-V Avg"] = df2['V'] - va
         df2["W'=W-W Avg"] = df2['W'] - wa
         df2['Octant'] = None
         #print(df2.head())
 
+        '''.loc function from pandas is used to traverse through (U', V', W') columns to append all the 
+        Octant value to the Octant column'''
         df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 1
         df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]<0),'Octant'] = -1
         df2.loc[(df2["U'=U-U Avg"]<0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 2
@@ -34,8 +40,10 @@ def octant_identification(mod=5000):
         df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]<0),'Octant'] = -4
         #print(df2.head())
 
+        # .astype('int') is used to convert the data type of 'Octant' column to 'int' data type
         df2['Octant'] = df2['Octant'].astype('int')
 
+        # 8 new list are created to store the count value of {+1,-2,+2,-2,+3,-3,+4,-4}
         count_1 = []
         count_1_ = []
         count_2 = []
@@ -63,12 +71,14 @@ def octant_identification(mod=5000):
         count_4_.append(" ")
         #print(count_1,count_1_)
 
+        # n --> given in tut01.pdf that max value will never exceed 30000.
         n = 30000
         if n%mod == 0:
             n_ranges = n//mod
         else:
             n_ranges = math.ceil(n/mod)
 
+        # Below while function is used to count the {+1,-2,+2,-2,+3,-3,+4,-4} values for different mod's
         k = 0
         m = mod
         n_r = n_ranges
@@ -90,54 +100,38 @@ def octant_identification(mod=5000):
         c_0 = [" ", " ","User Input"]
         for i in range(n_ranges):
             c_0.append(" ")
-    
+        
+        # This particular part of code is used to mention the ranges of mod in the column
         c0 = []
         c0.append("Octant ID")
         c0.append("Overall Count")
         c0.append(f"Mod {mod}")
-        c0.append(f"0000 - {mod}")
-        t = mod
+        t = 0
         u = t + mod
-        for j in range(3,n_ranges+2):
-            if u <= 30000:
-                p = 0
-                p = f"{t+1} - {u}" 
-                c0.append(p)
+        for j in range(n_ranges):
+            if u <= 29745:
+                if t==0:
+                    c0.append(f"{0000} - {u-1}")
+                else:
+                    c0.append(f"{t} - {u-1}")
                 t = u
-                u = u + mod
+                u += mod
             else:
-                p = 0
-                p = f"{t+1} - {30000}" 
-                c0.append(p)
+                c0.append(f"{t} - {df2.shape[0]}")
                 t = u
-                u = u + mod
-        #print(c0)
-
-        c1 = [1]
-        c1 += count_1
-
-        c2 = [-1]
-        c2 += count_1_
-
-        c3 = [2]
-        c3 += count_2
-
-        c4 = [-2]
-        c4 += count_2_
-
-        c5 = [3]
-        c5 += count_3
-
-        c6 = [-3]
-        c6 += count_3_
-
-        c7 = [4]
-        c7 += count_4
-
-        c8 = [-4]
-        c8 += count_4_
+                u += mod
+     
+        c1 = ["+1"] + count_1
+        c2 = ["-1"] + count_1_
+        c3 = ["+2"] + count_2
+        c4 = ["-2"] + count_2_
+        c5 = ["+3"] + count_3
+        c6 = ["-3"] + count_3_
+        c7 = ["+4"] + count_4
+        c8 = ["-4"] + count_4_
 
         #print(c0)
+        # Final 2D list is created to store the counts of all the values 
         final_count = []
         final_count.append(c_0)
         final_count.append(c0)
@@ -150,6 +144,7 @@ def octant_identification(mod=5000):
         final_count.append(c7)
         final_count.append(c8)
 
+        # transpose is used to convert list into columns of the 2D list
         df_final = pd.DataFrame(final_count).transpose()
         #print(df_final)
 
