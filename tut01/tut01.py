@@ -117,7 +117,7 @@ def octant_identification(mod=5000):
                 t = u
                 u += mod
             else:
-                c0.append(f"{t} - {df2.shape[0]}")
+                c0.append(f"{t} - {df2.shape[0] - 1}")
                 t = u
                 u += mod
      
