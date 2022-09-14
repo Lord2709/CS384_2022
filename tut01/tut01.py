@@ -130,7 +130,6 @@ def octant_identification(mod=5000):
         c7 = ["+4"] + count_4
         c8 = ["-4"] + count_4_
 
-        #print(c0)
         # Final 2D list is created to store the counts of all the values 
         final_count = []
         final_count.append(c_0)
@@ -167,9 +166,6 @@ if ver == "3.8.10":
 else:
     print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
 
-mod = int(input("Enter the mod value: "))
-if mod>0 and mod<=30000:
-    octant_identification(mod)
-    print("Code Compiled Successfully")
-else:
-    print("Mod value must lie in (0,30000]")
+mod = 5000
+octant_identification(mod)
+print("Code Compiled Successfully")
