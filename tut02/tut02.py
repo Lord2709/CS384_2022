@@ -160,7 +160,8 @@ def octant_transition_count(mod=5000):
         q = 0
         r = mod
 
-        df_final_ = gap(df_final_,col)
+        df_final_ = gap(df_final_, col, 0, oct0)
+        df_final_ = gap(df_final_, col, 1, oct0)
         final = pd.concat([df2,df_final_], axis = 1)
         #print(final.iloc[:,11:])
 
@@ -169,16 +170,51 @@ def octant_transition_count(mod=5000):
         print("Error: File does not appear to exist.")
         exit()
 
-def gap(d,col):
+def gap(d,col,k, oct):
     g_df = []
-    g0 = ["," for i in range(5)]
-    g1 = [",",",",",","Overall Transition Count"," "]
-    g2 = [",",",",",",",","To"]
-    g_df.append(g0)
-    g_df.append(g1)
-    g_df.append(g2)
-    for i in range(7):
+    if k==0:
+        g0 = ["," for i in range(5)]
+        g1 = [",",",",",","Overall Transition Count"," "]
+        g2 = [",",",",",",",","To"]
         g_df.append(g0)
+        g_df.append(g1)
+        g_df.append(g2)
+        for i in range(7):
+            g_df.append(g0)
+    else:
+        g0_ = [" "," ","From"] + [" " for i in range(8)]
+        g0 = [" ","Count","+1","-1","+2","-2","+3","-3","+4","-4"] 
+        lg = [1,-1,2,-2,3,-3,4,-4]
+        st = ["+1","-1","+2","-2","+3","-3","+4","-4"] 
+        g_df.append(g0_)
+        g_df.append(g0)
+        
+        for j in range(8):
+            l0 = [" "]
+            x = st[j]
+            l0.append(x)
+            l1 = [0]*8
+            for i in range(len(oct)):  
+                if(oct[i-1] == lg[j]):
+                    if(oct[i] == 1):
+                        l1[0] += 1
+                    elif(oct[i] == -1):
+                        l1[1] += 1
+                    elif(oct[i] == 2):
+                        l1[2] += 1
+                    elif(oct[i] == -2):
+                        l1[3] += 1
+                    elif(oct[i] == 3):
+                        l1[4] += 1
+                    elif(oct[i] == -3):
+                        l1[5] += 1
+                    elif(oct[i] == 4):
+                        l1[6] += 1
+                    elif(oct[i] == -4):
+                        l1[7] += 1 
+            #print(l0,type(lg))
+            lf = l0 + l1
+            g_df.append(lf)
     g_df_final = pd.DataFrame(g_df).transpose()
     g_df_final_ = pd.DataFrame(g_df_final.values[1:], columns=col)
     #print(g_df_final_)
