@@ -149,6 +149,18 @@ def octant_transition_count(mod=5000):
         df_final_ = pd.DataFrame(df_final.values[1:], columns=df_final.iloc[0])
         #print(df_final_)
         
+        col = df_final_.columns
+        #print(df_final_)
+        
+        oct0 = df2['Octant'].to_list()
+        #print(type(oct0[0]))
+        #print(len(df2['Octant']))
+
+        n_range = n//mod
+        q = 0
+        r = mod
+
+        df_final_ = gap(df_final_,col)
         final = pd.concat([df2,df_final_], axis = 1)
         #print(final.iloc[:,11:])
 
@@ -156,6 +168,22 @@ def octant_transition_count(mod=5000):
     except:
         print("Error: File does not appear to exist.")
         exit()
+
+def gap(d,col):
+    g_df = []
+    g0 = ["," for i in range(5)]
+    g1 = [",",",",",","Overall Transition Count"," "]
+    g2 = [",",",",",",",","To"]
+    g_df.append(g0)
+    g_df.append(g1)
+    g_df.append(g2)
+    for i in range(7):
+        g_df.append(g0)
+    g_df_final = pd.DataFrame(g_df).transpose()
+    g_df_final_ = pd.DataFrame(g_df_final.values[1:], columns=col)
+    #print(g_df_final_)
+    x = pd.concat([d,g_df_final_],ignore_index = True)
+    return x
 
 from platform import python_version
 ver = python_version()
