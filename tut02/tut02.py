@@ -162,7 +162,15 @@ def octant_transition_count(mod=5000):
 
         df_final_ = gap(df_final_, col, 0, oct0, mod, q, r)
         df_final_ = gap(df_final_, col, 1, oct0, mod, q, r)
-        df_final_ = gap(df_final_, col, 2, oct0, mod, q, r)
+        
+        while n_range > 0:   
+            n_range -= 1
+            d_f = df2.iloc[q:r]
+            df_final_ = gap(df_final_,col,2,oct0,mod,q,r)
+            df_final_ = gap(df_final_,col,3,oct0,mod,q,r)
+            q = r 
+            r = r + mod
+        
         final = pd.concat([df2,df_final_], axis = 1)
         #print(final.iloc[:,11:])
 
@@ -190,7 +198,7 @@ def gap(d,col,k,oct,mod,q,r):
         g_df.append(g2)
         for i in range(7):
             g_df.append(g0)
-    elif k==1:
+    elif k==1 or k==3:
         g0_ = [" "," ","From"] + [" " for i in range(8)]
         g0 = [" ","Count","+1","-1","+2","-2","+3","-3","+4","-4"] 
         lg = [1,-1,2,-2,3,-3,4,-4]
@@ -203,23 +211,28 @@ def gap(d,col,k,oct,mod,q,r):
             x = st[j]
             l0.append(x)
             l1 = [0]*8
-            for i in range(len(oct)):  
-                if(oct[i-1] == lg[j]):
-                    if(oct[i] == 1):
+
+            if k==1:
+                d__f = oct
+            else:
+                d__f = oct[q:r]
+            for i in range(len(d__f)):  
+                if(d__f[i-1] == lg[j]):
+                    if(d__f[i] == 1):
                         l1[0] += 1
-                    elif(oct[i] == -1):
+                    elif(d__f[i] == -1):
                         l1[1] += 1
-                    elif(oct[i] == 2):
+                    elif(d__f[i] == 2):
                         l1[2] += 1
-                    elif(oct[i] == -2):
+                    elif(d__f[i] == -2):
                         l1[3] += 1
-                    elif(oct[i] == 3):
+                    elif(d__f[i] == 3):
                         l1[4] += 1
-                    elif(oct[i] == -3):
+                    elif(d__f[i] == -3):
                         l1[5] += 1
-                    elif(oct[i] == 4):
+                    elif(d__f[i] == 4):
                         l1[6] += 1
-                    elif(oct[i] == -4):
+                    elif(d__f[i] == -4):
                         l1[7] += 1 
             #print(l0,type(lg))
             lf = l0 + l1
