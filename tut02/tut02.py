@@ -160,8 +160,9 @@ def octant_transition_count(mod=5000):
         q = 0
         r = mod
 
-        df_final_ = gap(df_final_, col, 0, oct0)
-        df_final_ = gap(df_final_, col, 1, oct0)
+        df_final_ = gap(df_final_, col, 0, oct0, mod, q, r)
+        df_final_ = gap(df_final_, col, 1, oct0, mod, q, r)
+        df_final_ = gap(df_final_, col, 2, oct0, mod, q, r)
         final = pd.concat([df2,df_final_], axis = 1)
         #print(final.iloc[:,11:])
 
@@ -170,18 +171,26 @@ def octant_transition_count(mod=5000):
         print("Error: File does not appear to exist.")
         exit()
 
-def gap(d,col,k, oct):
+def gap(d,col,k,oct,mod,q,r):
     g_df = []
-    if k==0:
-        g0 = ["," for i in range(5)]
-        g1 = [",",",",",","Overall Transition Count"," "]
-        g2 = [",",",",",",",","To"]
+    if k==0 or k==2:
+        g0 = [" " for i in range(5)]
+        if k==0:
+            g1 = [" "," "," ","Overall Transition Count"," "]
+        else:
+            if q != 0:
+                p = f"{q} - {r-1}"
+            else:
+                p = f"{q} - {r-1}"
+            g1 = [" "," "," ","Mod Transition Count"]
+            g1.append(p)
+        g2 = [" "," "," "," ","To"]
         g_df.append(g0)
         g_df.append(g1)
         g_df.append(g2)
         for i in range(7):
             g_df.append(g0)
-    else:
+    elif k==1:
         g0_ = [" "," ","From"] + [" " for i in range(8)]
         g0 = [" ","Count","+1","-1","+2","-2","+3","-3","+4","-4"] 
         lg = [1,-1,2,-2,3,-3,4,-4]
