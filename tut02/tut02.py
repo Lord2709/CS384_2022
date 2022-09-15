@@ -8,7 +8,7 @@ def octant_transition_count(mod=5000):
     try:
         df = pd.read_excel('input_octant_transition_identify.xlsx')
         #print(df.head())
-
+    
         #(ua, va, wa) variables are used to store mean values of (U, V, W) columns
         ua = df.U.mean()
         va = df.V.mean()
@@ -153,10 +153,11 @@ def octant_transition_count(mod=5000):
         #print(df_final_)
         
         oct0 = df2['Octant'].to_list()
-        #print(type(oct0[0]))
-        #print(len(df2['Octant']))
 
-        n_range = n//mod
+        if n%mod == 0:
+            n_range = n//mod
+        else:
+            n_range = math.ceil(n/mod)
         q = 0
         r = mod
 
@@ -186,10 +187,13 @@ def gap(d,col,k,oct,mod,q,r):
         if k==0:
             g1 = [" "," "," ","Overall Transition Count"," "]
         else:
-            if q != 0:
-                p = f"{q} - {r-1}"
+            if r <= 29745:
+                if q==0:
+                    p = f"{0000} - {r-1}"
+                else:
+                    p = f"{q} - {r-1}"
             else:
-                p = f"{q} - {r-1}"
+                p = f"{q} - {len(oct) - 1}"
             g1 = [" "," "," ","Mod Transition Count"]
             g1.append(p)
         g2 = [" "," "," "," ","To"]
