@@ -43,32 +43,21 @@ def octant_transition_count(mod=5000):
         df2['Octant'] = df2['Octant'].astype('int')
 
         # 8 new list are created to store the count value of {+1,-2,+2,-2,+3,-3,+4,-4}
-        count_1 = []
-        count_1_ = []
-        count_2 = []
-        count_2_ = []
-        count_3 = []
-        count_3_ = []
-        count_4 = []
-        count_4_ = []
+        overall_count = []
+        e = 0
+        st = ["+1","-1","+2","-2","+3","-3","+4","-4"]
+        for i in range(8):
+            empty_list = []
+            empty_list.append(st[e])
+            overall_count.append(empty_list)
+            e += 1
 
-        count_1.append((df2['Octant'] == 1).value_counts()[1])
-        count_1.append(" ")
-        count_1_.append((df2['Octant'] == -1).value_counts()[1])
-        count_1_.append(" ")
-        count_2.append((df2['Octant'] == 2).value_counts()[1])
-        count_2.append(" ")
-        count_2_.append((df2['Octant'] == -2).value_counts()[1])
-        count_2_.append(" ")
-        count_3.append((df2['Octant'] == 3).value_counts()[1])
-        count_3.append(" ")
-        count_3_.append((df2['Octant'] == -3).value_counts()[1])
-        count_3_.append(" ")
-        count_4.append((df2['Octant'] == 4).value_counts()[1])
-        count_4.append(" ")
-        count_4_.append((df2['Octant'] == -4).value_counts()[1])
-        count_4_.append(" ")
-        #print(count_1,count_1_)
+        int_l = [1,-1,2,-2,3,-3,4,-4]
+        j = 0
+        for i in range(8):
+            overall_count[i].append((df2['Octant'] == int_l[j]).value_counts()[1])
+            overall_count[i].append(" ")
+            j += 1
 
         # n --> given in tut01.pdf that max value will never exceed 30000.
         n = 30000
@@ -84,17 +73,18 @@ def octant_transition_count(mod=5000):
         while n_r > 0:   
             n_r -= 1
             d_f = df2.iloc[k:m]
-            count_1.append((d_f['Octant'] == 1).value_counts()[1])
-            count_1_.append((d_f['Octant'] == -1).value_counts()[1])
-            count_2.append((d_f['Octant'] == 2).value_counts()[1])
-            count_2_.append((d_f['Octant'] == -2).value_counts()[1])
-            count_3.append((d_f['Octant'] == 3).value_counts()[1])
-            count_3_.append((d_f['Octant'] == -3).value_counts()[1])
-            count_4.append((d_f['Octant'] == 4).value_counts()[1])
-            count_4_.append((d_f['Octant'] == -4).value_counts()[1])
+            j = 0
+            for i in range(8):
+                overall_count[i].append((d_f['Octant'] == int_l[j]).value_counts()[1])
+                j += 1
             k = m 
             m = m + mod
-        #print(count_4_)
+
+        j = 0
+        for i in range(8):
+            #print(type(i))
+            overall_count[i].append((df2['Octant'] == int_l[j]).value_counts()[1])
+            j += 1
 
         c_0 = [" ", " ","User Input"]
         for i in range(n_ranges):
@@ -107,40 +97,24 @@ def octant_transition_count(mod=5000):
         c0.append(f"Mod {mod}")
         t = 0
         u = t + mod
-        for j in range(n_ranges):
+        for j in range(n_ranges+1):
             if u <= 29745:
                 if t==0:
                     c0.append(f"{0000} - {u-1}")
                 else:
                     c0.append(f"{t} - {u-1}")
-                t = u
-                u += mod
+            elif j == n_ranges:
+                c0.append("Verified")
             else:
                 c0.append(f"{t} - {df2.shape[0] - 1}")
-                t = u
-                u += mod
+            t = u
+            u += mod
      
-        c1 = ["+1"] + count_1
-        c2 = ["-1"] + count_1_
-        c3 = ["+2"] + count_2
-        c4 = ["-2"] + count_2_
-        c5 = ["+3"] + count_3
-        c6 = ["-3"] + count_3_
-        c7 = ["+4"] + count_4
-        c8 = ["-4"] + count_4_
-
-        # Final 2D list is created to store the counts of all the values 
         final_count = []
         final_count.append(c_0)
         final_count.append(c0)
-        final_count.append(c1)
-        final_count.append(c2)
-        final_count.append(c3)
-        final_count.append(c4)
-        final_count.append(c5)
-        final_count.append(c6)
-        final_count.append(c7)
-        final_count.append(c8)
+        for i in range(8):
+            final_count.append(overall_count[i])
 
         # transpose is used to convert list into columns of the 2D list
         df_final = pd.DataFrame(final_count).transpose()
@@ -154,18 +128,14 @@ def octant_transition_count(mod=5000):
         
         oct0 = df2['Octant'].to_list()
 
-        if n%mod == 0:
-            n_range = n//mod
-        else:
-            n_range = math.ceil(n/mod)
         q = 0
         r = mod
 
         df_final_ = gap(df_final_, col, 0, oct0, mod, q, r)
         df_final_ = gap(df_final_, col, 1, oct0, mod, q, r)
         
-        while n_range > 0:   
-            n_range -= 1
+        while n_ranges > 0:   
+            n_ranges -= 1
             d_f = df2.iloc[q:r]
             df_final_ = gap(df_final_,col,2,oct0,mod,q,r)
             df_final_ = gap(df_final_,col,3,oct0,mod,q,r)
