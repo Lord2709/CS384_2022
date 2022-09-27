@@ -91,9 +91,7 @@ def octant_transition_count(mod=5000):
             c_0.append(" ")
         
         # This particular part of code is used to mention the ranges of mod in the column
-        c0 = []
-        c0.append("Octant ID")
-        c0.append("Overall Count")
+        c0 = ["Octant ID", "Overall Count"]
         c0.append(f"Mod {mod}")
         t = 0
         u = t + mod
@@ -190,23 +188,23 @@ def gap(d,col,k,oct,mod,q,r):
                 d__f = oct
             else:
                 d__f = oct[q:r]
-            for i in range(len(d__f)):  
+            for i in range(2,len(d__f)+1):  
                 if(d__f[i-1] == lg[j]):
-                    if(d__f[i] == 1):
+                    if(d__f[i-2] == 1):
                         l1[0] += 1
-                    elif(d__f[i] == -1):
+                    elif(d__f[i-2] == -1):
                         l1[1] += 1
-                    elif(d__f[i] == 2):
+                    elif(d__f[i-2] == 2):
                         l1[2] += 1
-                    elif(d__f[i] == -2):
+                    elif(d__f[i-2] == -2):
                         l1[3] += 1
-                    elif(d__f[i] == 3):
+                    elif(d__f[i-2] == 3):
                         l1[4] += 1
-                    elif(d__f[i] == -3):
+                    elif(d__f[i-2] == -3):
                         l1[5] += 1
-                    elif(d__f[i] == 4):
+                    elif(d__f[i-2] == 4):
                         l1[6] += 1
-                    elif(d__f[i] == -4):
+                    elif(d__f[i-2] == -4):
                         l1[7] += 1 
             #print(l0,type(lg))
             lf = l0 + l1
