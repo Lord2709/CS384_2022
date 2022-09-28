@@ -193,7 +193,7 @@ def gap(d,col,k,oct,mod,q,r):
             if k==1:
                 d__f = oct
             else:
-                d__f = oct[q:r]
+                d__f = oct[q:r+1]
             for i in range(2,len(d__f)+1):  
                 if(d__f[i-1] == lg[j]):
                     if(d__f[i-2] == 1):
