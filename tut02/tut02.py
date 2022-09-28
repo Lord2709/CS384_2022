@@ -14,8 +14,8 @@ def octant_transition_count(mod=5000):
         va = df.V.mean()
         wa = df.W.mean()
 
-        # df1 variable store the data frame which contains ua, va, wa values
-        # df2 variable store the main data frame after concatenating df and df1
+        # df1 variable stores the data frame which contains ua, va, wa values
+        # df2 variable stores the main data frame after concatenating df and df1
         df1 = pd.DataFrame({'U Avg':[ua],'V Avg':[va],'W Avg':[wa]})
         df2 = pd.concat([df,df1], axis = 1)
         #print(df2.head())
@@ -42,14 +42,16 @@ def octant_transition_count(mod=5000):
         # .astype('int') is used to convert the data type of 'Octant' column to 'int' data type
         df2['Octant'] = df2['Octant'].astype('int')
 
-        # 8 new list are created to store the count value of {+1,-2,+2,-2,+3,-3,+4,-4}
+        # An 2D List (overall_count) is created to store the entire columns representing values --> {+1,-2,+2,-2,+3,-3,+4,-4}
         overall_count = []
         e = 0
-        st = ["+1","-1","+2","-2","+3","-3","+4","-4"]
+        # st list is used to append string values in 2D list and also to loop through it ahead in the code
+        st = ["+1","-1","+2","-2","+3","-3","+4","-4"] 
         for i in range(8):
+            # empty_list will store values of each column represented by the values --> {+1,-2,+2,-2,+3,-3,+4,-4}
             empty_list = []
             empty_list.append(st[e])
-            overall_count.append(empty_list)
+            overall_count.append(empty_list) # Column appended in overall_count 2D list
             e += 1
 
         int_l = [1,-1,2,-2,3,-3,4,-4]
@@ -59,7 +61,7 @@ def octant_transition_count(mod=5000):
             overall_count[i].append(" ")
             j += 1
 
-        # n --> given in tut01.pdf that max value will never exceed 30000.
+        # n --> given in tut02.pdf that max value will never exceed 30000.
         n = 30000
         if n%mod == 0:
             n_ranges = n//mod
@@ -80,6 +82,7 @@ def octant_transition_count(mod=5000):
             k = m 
             m = m + mod
 
+        # Below 'for' loop used to append 'Verified' row to the overall_count list
         j = 0
         for i in range(8):
             #print(type(i))
@@ -107,7 +110,8 @@ def octant_transition_count(mod=5000):
                 c0.append(f"{t} - {df2.shape[0] - 1}")
             t = u
             u += mod
-     
+    
+    # final_count 2D list stores all the columns ahead of 'Octant' column
         final_count = []
         final_count.append(c_0)
         final_count.append(c0)
@@ -124,7 +128,7 @@ def octant_transition_count(mod=5000):
         col = df_final_.columns
         #print(df_final_)
         
-        oct0 = df2['Octant'].to_list()
+        oct0 = df2['Octant'].to_list() 
 
         q = 0
         r = mod
@@ -148,8 +152,10 @@ def octant_transition_count(mod=5000):
         print("Error: File does not appear to exist.")
         exit()
 
+# gap function is created to append gaps betwwen 2 tables and also to calculate overall & mod transition count
 def gap(d,col,k,oct,mod,q,r):
     g_df = []
+    # g_df is the overall 2D list which will be created everytime gap function is called
     if k==0 or k==2:
         g0 = [" " for i in range(5)]
         if k==0:
@@ -212,6 +218,7 @@ def gap(d,col,k,oct,mod,q,r):
     g_df_final = pd.DataFrame(g_df).transpose()
     g_df_final_ = pd.DataFrame(g_df_final.values[1:], columns=col)
     #print(g_df_final_)
+    # gap between table or the data table as a dataframe is appended to the main dataframe(d)
     x = pd.concat([d,g_df_final_],ignore_index = True)
     return x
 
