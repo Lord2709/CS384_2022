@@ -32,7 +32,14 @@ def octant_longest_subsequence_count():
     df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 4
     df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]<0),'Octant'] = -4
 
-    print(df2.head())
+    # print(df2.head())
+    # print(df2.info())
+    df2['Octant'] = df2['Octant'].astype('int')
+
+    g0 = []
+    for i in range(11):
+        g0.append(" ")
+    g1 = [" ","Count","+1","-1","+2","-2","+3","-3","+4","-4"]
 
 
 from platform import python_version
