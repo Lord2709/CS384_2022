@@ -40,6 +40,14 @@ def octant_longest_subsequence_count():
     for i in range(11):
         g0.append(" ")
     g1 = [" ","Count","+1","-1","+2","-2","+3","-3","+4","-4"]
+    g2 = [" ","Longest Subsquence Length"]
+    g2_ = []
+    g3 = [" ","Count"]
+    g3_ = []
+
+    n = df2.shape[0]
+    oct = df2['Octant'].to_list()
+    int_l = [1,-1,2,-2,3,-3,4,-4]
 
 
 from platform import python_version
