@@ -69,7 +69,33 @@ def octant_longest_subsequence_count():
                 if(count2 == previous_count):
                     final_count += 1
                     count2 = 0
-        print(previous_count, final_count)
+        # print(previous_count, final_count)
+        g2_.append(previous_count)
+        g3_.append(final_count)
+
+     # print(g2_,g3_)
+    g2 = g2 + g2_
+    g3 = g3 + g3_
+
+    g_final = []
+    g_final.append(g0)
+    g_final.append(g1)
+    g_final.append(g2)
+    g_final.append(g3)
+
+    # print(df2.head())
+
+    df_final = pd.DataFrame(g_final).transpose()
+    # df_final = df_final.rename(columns=df_final.iloc[0], inplace = True)
+    # print(df_final)
+
+    df_final1 = pd.DataFrame(df_final.values[1:], columns=df_final.iloc[0])
+    # print(df_final1)
+    
+    final = pd.concat([df2,df_final1], axis = 1)
+    # print(final)
+    
+    final.to_excel('output_octant_longest_subsequence.xlsx', index = False)
 
 
 from platform import python_version
@@ -80,5 +106,5 @@ if ver == "3.8.10":
 else:
     print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
 
-
 octant_longest_subsequence_count()
+print("Code Compiled Successfully")
