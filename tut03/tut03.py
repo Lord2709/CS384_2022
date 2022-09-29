@@ -1,6 +1,39 @@
 #Help https://youtu.be/H37f_x4wAC0
+import os
+os.system('cls')
+import pandas as pd
+
 def octant_longest_subsequence_count():
-###Code
+    df = pd.read_excel('input_octant_longest_subsequence.xlsx')
+    # print(df.head())
+
+    ua = df.U.mean()
+    va = df.V.mean()
+    wa = df.W.mean()
+
+    df1 = pd.DataFrame({'U Avg':[ua],'V Avg':[va],'W Avg':[wa]})
+    df2 = pd.concat([df,df1], axis = 1)
+
+    # print(df.head())
+
+    df2["U'=U-U Avg"] = df2['U'] - ua
+    df2["V'=V-V Avg"] = df2['V'] - va
+    df2["W'=W-W Avg"] = df2['W'] - wa
+    df2['Octant'] = None
+
+    # print(df2.head())
+
+    df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 1
+    df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]<0),'Octant'] = -1
+    df2.loc[(df2["U'=U-U Avg"]<0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 2
+    df2.loc[(df2["U'=U-U Avg"]<0) & (df2["V'=V-V Avg"]>=0) & (df2["W'=W-W Avg"]<0),'Octant'] = -2
+    df2.loc[(df2["U'=U-U Avg"]<0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 3
+    df2.loc[(df2["U'=U-U Avg"]<0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]<0),'Octant'] = -3
+    df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]>=0),'Octant'] = 4
+    df2.loc[(df2["U'=U-U Avg"]>=0) & (df2["V'=V-V Avg"]<0) & (df2["W'=W-W Avg"]<0),'Octant'] = -4
+
+    print(df2.head())
+
 
 from platform import python_version
 ver = python_version()
