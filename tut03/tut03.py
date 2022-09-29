@@ -49,6 +49,28 @@ def octant_longest_subsequence_count():
     oct = df2['Octant'].to_list()
     int_l = [1,-1,2,-2,3,-3,4,-4]
 
+    for j in int_l:
+        count1 = 0
+        previous_count = 0
+        for i in range(n):
+            if(oct[i] == j):
+                count1 += 1
+            else:
+                if(count1 > previous_count):
+                    previous_count = count1
+                count1 = 0
+        final_count = 0
+        count2 = 0
+        for i in range(n):
+            if(oct[i] != j):
+                count2 = 0
+            else:
+                count2 += 1
+                if(count2 == previous_count):
+                    final_count += 1
+                    count2 = 0
+        print(previous_count, final_count)
+
 
 from platform import python_version
 ver = python_version()
