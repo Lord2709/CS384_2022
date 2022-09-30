@@ -56,28 +56,31 @@ def octant_longest_subsequence_count_with_range():
         l = [1,-1,2,-2,3,-3,4,-4]
         #print(oct)
 
+        '''count1 to store initial count and previous_count is used to store 
+        previous count as the count value keeps on changing.'''
         for j in l:
-            count = 0
+            count1 = 0
             prev = 0
             indexend = 0
             for i in range(n):
                 if(oct[i] == j):
-                    count += 1
+                    count1 += 1
                 else:
-                    if(count > prev):
-                        prev = count
+                    if(count1 > prev):
+                        prev = count1
                         indexend = i
-                    count = 0
+                    count1 = 0
+            # c is used to store total number of times the small longest subsequence occurs
             c = 0
-            count1 = 0
+            count2 = 0
             for i in range(n):
                 if(oct[i] != j):
-                    count1 = 0
+                    count2 = 0
                 else:
-                    count1 += 1
-                    if(count1 == prev):
+                    count2 += 1
+                    if(count2 == prev):
                         c+=1
-                        count1 = 0
+                        count2 = 0
             #print(prev, c)
             g2_.append(prev)
             g3_.append(c)
@@ -86,6 +89,7 @@ def octant_longest_subsequence_count_with_range():
         g2 = g2 + g2_
         g3 = g3 + g3_
 
+        # 2d list to store entire small longest subsequence table
         g_final = []
         g_final.append(g0)
         g_final.append(g1)
@@ -112,9 +116,10 @@ def octant_longest_subsequence_count_with_range():
     except:
         print("Error in calling function")
 
+# new_df function created to make columns with Time 
 def new_df(n,time1,oct,l,g3_,semi__final):
     dk = []
-
+    # g0,g1,g2,g3 are the list created which will store the values of the column 
     x = sum(g3_) + 18
     g0 = [" " for i in range(x)]
     g1 = [" ","Count"]
@@ -133,29 +138,29 @@ def new_df(n,time1,oct,l,g3_,semi__final):
     l_1 = []
     
     for j in l:
-        count = 0
+        count1 = 0
         prev = 0
         for i in range(n):
             if(oct[i] == j):
-                count += 1
+                count1 += 1
             else:
-                if(count > prev):
-                    prev = count
+                if(count1 > prev):
+                    prev = count1
                     indexend = i
-                count = 0
+                count1 = 0
         c = 0
-        count1 = 0
+        count2 = 0
         indexend = 0
         l0 = []
         l1 = []   
         for i in range(n):
             if(oct[i] != j):
-                count1 = 0
+                count2 = 0
             else:
-                count1 += 1
-            if(count1 == prev):
+                count2 += 1
+            if(count2 == prev):
                 c+=1
-                count1 = 0
+                count2 = 0
                 indexend = i
                 l0.append(indexend-prev+1)
                 l1.append(indexend)
