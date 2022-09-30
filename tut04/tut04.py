@@ -1,6 +1,5 @@
 #Help https://youtu.be/H37f_x4wAC0
 import os
-from time import time
 os.system('cls')
 import pandas as pd
 
@@ -100,9 +99,95 @@ def octant_longest_subsequence_count_with_range():
     #print(df_final_)
     
 
-    final = pd.concat([df2,df_final_], axis = 1)
-    #print(final.iloc[:,11:])
-    final.to_excel('octant_output2.xlsx', index = False)
+    final1 = pd.concat([df2,df_final_], axis = 1)
+    # print(final.iloc[:,11:])
+
+    final = new_df(n,time1,oct,l,g3_,final1)
+    final.to_excel('octant_output.xlsx', index = False)
+
+def new_df(n,time1,oct,l,g3_,semi__final):
+    dk = []
+
+    x = sum(g3_) + 18
+    g0 = [" " for i in range(x)]
+    g1 = [" ","Count"]
+    l_ = ["+1","-1","+2","-2","+3","-3","+4","-4"]
+    for i in range(len(l_)):
+        g1.append(l_[i])
+        g1.append("Time")
+        gap = [" " for _ in range(g3_[i])]
+        g1 = g1 + gap
+    
+    g2 = [" ","Longest Subsquence Length"]
+    g3 = [" ","Count"]
+    k0 = []
+    k1 = []
+    l_0 = []
+    l_1 = []
+    
+    for j in l:
+        count = 0
+        prev = 0
+        for i in range(n):
+            if(oct[i] == j):
+                count += 1
+            else:
+                if(count > prev):
+                    prev = count
+                    indexend = i
+                count = 0
+        c = 0
+        count1 = 0
+        indexend = 0
+        l0 = []
+        l1 = []   
+        for i in range(n):
+            if(oct[i] != j):
+                count1 = 0
+            else:
+                count1 += 1
+            if(count1 == prev):
+                c+=1
+                count1 = 0
+                indexend = i
+                l0.append(indexend-prev+1)
+                l1.append(indexend)
+            #print(prev, c)
+        l_0.append(l0)
+        l_1.append(l1)
+        k0.append(prev)
+        k1.append(c)
+    #print(l_0[0],type(l_1))
+    #z = l_0[0]
+    #print(z[0])
+    for j in range(8):
+        g2.append(k0[j])
+        g2.append("From")
+        z1 = l_0[j]
+        for p in range(len(z1)):
+            t = time1[z1[p]]
+            g2.append(t)
+
+    for j in range(8):
+        g3.append(k1[j])
+        g3.append("To")
+        z2 = l_1[j]
+        for p in range(len(z2)):
+            t = time1[z2[p]]
+            g3.append(t)
+            
+    #print(g3)
+
+    dk.append(g0)
+    dk.append(g1)
+    dk.append(g2)
+    dk.append(g3)
+    d_f = pd.DataFrame(dk).transpose()
+    df = pd.DataFrame(d_f.values[1:], columns=d_f.iloc[0])
+    #print(semi__final,df)
+    df_final = pd.concat([semi__final,df], axis = 1)
+    return df_final
+
 
 from platform import python_version
 ver = python_version()
