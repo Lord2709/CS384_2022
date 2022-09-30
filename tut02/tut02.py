@@ -149,6 +149,7 @@ def octant_transition_count(mod=5000):
         #print(final.iloc[:,11:])
         try:
             final.to_excel('output_octant_transition_identify.xlsx',index = False)
+            print("Code Compiled Successfully")
         except:
             print("Error : It appears that output file has not be created")
     except:
@@ -235,4 +236,3 @@ else:
 
 mod=5000
 octant_transition_count(mod)
-print("Code Compiled Successfully")
