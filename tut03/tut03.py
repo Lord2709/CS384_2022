@@ -2,6 +2,9 @@
 import os
 os.system('cls')
 import pandas as pd
+from datetime import datetime
+start_time = datetime.now()
+
 
 def octant_longest_subsequence_count():
     try:
@@ -118,3 +121,5 @@ else:
     print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
 
 octant_longest_subsequence_count()
+end_time = datetime.now()
+print("Duration of Program Execution: {}".format(end_time-start_time))
