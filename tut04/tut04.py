@@ -4,8 +4,8 @@ os.system('cls')
 import pandas as pd
 
 def octant_longest_subsequence_count_with_range():
-    # df = pd.read_excel('input_octant_longest_subsequence_with_range.xlsx')
-    df = pd.read_excel('small_longest_subsequence_with_range - Copy.xlsx')
+    df = pd.read_excel('input_octant_longest_subsequence_with_range.xlsx')
+    # df = pd.read_excel('small_longest_subsequence_with_range.xlsx')
     #print(df.head())
 
     ua = df.U.mean()
@@ -103,7 +103,7 @@ def octant_longest_subsequence_count_with_range():
     # print(final.iloc[:,11:])
 
     final = new_df(n,time1,oct,l,g3_,final1)
-    final.to_excel('octant_output.xlsx', index = False)
+    final.to_excel('output_octant_longest_subsequence_with_range.xlsx', index = False)
 
 def new_df(n,time1,oct,l,g3_,semi__final):
     dk = []
