@@ -7,6 +7,7 @@ import math
 def octant_transition_count(mod=5000):
     try:
         df = pd.read_excel('input_octant_transition_identify.xlsx')
+
         #print(df.head())
     
         #(ua, va, wa) variables are used to store mean values of (U, V, W) columns
@@ -146,10 +147,12 @@ def octant_transition_count(mod=5000):
         
         final = pd.concat([df2,df_final_], axis = 1)
         #print(final.iloc[:,11:])
-
-        final.to_excel('output_octant_transition_identify.xlsx',index = False)
+        try:
+            final.to_excel('output_octant_transition_identify.xlsx',index = False)
+        except:
+            print("Error : It appears that output file has not be created")
     except:
-        print("Error: File does not appear to exist.")
+        print("Error in calling function")
         exit()
 
 # gap function is created to append gaps betwwen 2 tables and also to calculate overall & mod transition count
