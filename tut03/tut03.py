@@ -101,9 +101,13 @@ def octant_longest_subsequence_count():
         final = pd.concat([df2,df_final1], axis = 1)
         # print(final)
         
-        final.to_excel('output_octant_longest_subsequence.xlsx', index = False)
+        try:
+            final.to_excel('output_octant_longest_subsequence.xlsx', index = False)
+            print("Code Compiled Successfully")
+        except:
+            print("Error : It appears that output file has not be created")
     except:
-        print("Error : File does not exist")
+        print("Error in calling function")
 
 from platform import python_version
 ver = python_version()
@@ -114,4 +118,3 @@ else:
     print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
 
 octant_longest_subsequence_count()
-print("Code Compiled Successfully")
