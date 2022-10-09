@@ -43,7 +43,7 @@ def octant_longest_subsequence_count():
         g0 = []
         for i in range(11):
             g0.append(" ")
-        g1 = [" ","Count","+1","-1","+2","-2","+3","-3","+4","-4"]
+        g1 = [" ","Octant","+1","-1","+2","-2","+3","-3","+4","-4"]
         g2 = [" ","Longest Subsquence Length"]
         g2_ = []
         g3 = [" ","Count"]

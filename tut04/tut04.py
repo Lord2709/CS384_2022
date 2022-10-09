@@ -41,7 +41,7 @@ def octant_longest_subsequence_count_with_range():
         g0 = []
         for i in range(10):
             g0.append(" ")
-        g1 = [" ","Count","+1","-1","+2","-2","+3","-3","+4","-4"]
+        g1 = [" ","Octant","+1","-1","+2","-2","+3","-3","+4","-4"]
         g2 = [" ","Longest Subsquence Length"]
         g2_ = []
         g3 = [" ","Count"]
@@ -122,7 +122,7 @@ def new_df(n,time1,oct,l,g3_,semi__final):
     # g0,g1,g2,g3 are the list created which will store the values of the column 
     x = sum(g3_) + 18
     g0 = [" " for i in range(x)]
-    g1 = [" ","Count"]
+    g1 = [" ","Octant"]
     l_ = ["+1","-1","+2","-2","+3","-3","+4","-4"]
     for i in range(len(l_)):
         g1.append(l_[i])
