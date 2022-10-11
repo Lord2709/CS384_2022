@@ -5,7 +5,6 @@ import pandas as pd
 from datetime import datetime
 start_time = datetime.now()
 
-
 def octant_longest_subsequence_count():
     try:
         df = pd.read_excel('input_octant_longest_subsequence.xlsx')
@@ -40,6 +39,7 @@ def octant_longest_subsequence_count():
         # print(df2.info())
         df2['Octant'] = df2['Octant'].astype('int')
 
+        # g0,g1,g2,g3 are the 4 columns of the Table including the gap column between the Octant column and Table
         g0 = []
         for i in range(11):
             g0.append(" ")
@@ -95,20 +95,18 @@ def octant_longest_subsequence_count():
         # print(df2.head())
 
         df_final = pd.DataFrame(g_final).transpose()
-        # df_final = df_final.rename(columns=df_final.iloc[0], inplace = True)
-        # print(df_final)
-
         df_final1 = pd.DataFrame(df_final.values[1:], columns=df_final.iloc[0])
-        # print(df_final1)
         
-        final = pd.concat([df2,df_final1], axis = 1)
-        # print(final)
+        try:
+            final = pd.concat([df2,df_final1], axis = 1)
+        except:
+            print("Error in concatenating two DataFrame.")
         
         try:
             final.to_excel('output_octant_longest_subsequence.xlsx', index = False)
             print("Code Compiled Successfully")
         except:
-            print("Error : It appears that output file has not be created")
+            print("Error : It seems that no output file has been generated.")
     except:
         print("Error in calling function")
 
