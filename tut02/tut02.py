@@ -100,7 +100,7 @@ def octant_transition_count(mod=5000):
         t = 0
         u = t + mod
         for j in range(n_ranges+1):
-            if u <= 29745:
+            if u <= len(df2["Octant"]):
                 if t==0:
                     c0.append(f"{0000} - {u-1}")
                 else:
@@ -151,80 +151,83 @@ def octant_transition_count(mod=5000):
             final.to_excel('output_octant_transition_identify.xlsx',index = False)
             print("Code Compiled Successfully")
         except:
-            print("Error : It appears that output file has not be created")
+            print("Error : It seems that no output file has been generated.")
     except:
         print("Error in calling function")
         exit()
 
 # gap function is created to append gaps betwwen 2 tables and also to calculate overall & mod transition count
 def gap(d,col,k,oct,mod,q,r):
-    g_df = []
-    # g_df is the overall 2D list which will be created everytime gap function is called
-    if k==0 or k==2:
-        g0 = [" " for i in range(5)]
-        if k==0:
-            g1 = [" "," "," ","Overall Transition Count"," "]
-        else:
-            if r <= 29745:
-                if q==0:
-                    p = f"{0000} - {r-1}"
+    try:
+        g_df = []
+        # g_df is the overall 2D list which will be created everytime gap function is called
+        if k==0 or k==2:
+            g0 = [" " for i in range(5)]
+            if k==0:
+                g1 = [" "," "," ","Overall Transition Count"," "]
+            else:
+                if r <= len(oct):
+                    if q==0:
+                        p = f"{0000} - {r-1}"
+                    else:
+                        p = f"{q} - {r-1}"
                 else:
-                    p = f"{q} - {r-1}"
-            else:
-                p = f"{q} - {len(oct) - 1}"
-            g1 = [" "," "," ","Mod Transition Count"]
-            g1.append(p)
-        g2 = [" "," "," "," ","To"]
-        g_df.append(g0)
-        g_df.append(g1)
-        g_df.append(g2)
-        for i in range(7):
+                    p = f"{q} - {len(oct) - 1}"
+                g1 = [" "," "," ","Mod Transition Count"]
+                g1.append(p)
+            g2 = [" "," "," "," ","To"]
             g_df.append(g0)
-    elif k==1 or k==3:
-        g0_ = [" "," ","From"] + [" " for i in range(8)]
-        g0 = [" ","Count","+1","-1","+2","-2","+3","-3","+4","-4"] 
-        lg = [1,-1,2,-2,3,-3,4,-4]
-        st = ["+1","-1","+2","-2","+3","-3","+4","-4"] 
-        g_df.append(g0_)
-        g_df.append(g0)
-        
-        for j in range(8):
-            l0 = [" "]
-            x = st[j]
-            l0.append(x)
-            l1 = [0]*8
+            g_df.append(g1)
+            g_df.append(g2)
+            for i in range(7):
+                g_df.append(g0)
+        elif k==1 or k==3:
+            g0_ = [" "," ","From"] + [" " for i in range(8)]
+            g0 = [" ","Count","+1","-1","+2","-2","+3","-3","+4","-4"] 
+            lg = [1,-1,2,-2,3,-3,4,-4]
+            st = ["+1","-1","+2","-2","+3","-3","+4","-4"] 
+            g_df.append(g0_)
+            g_df.append(g0)
+            
+            for j in range(8):
+                l0 = [" "]
+                x = st[j]
+                l0.append(x)
+                l1 = [0]*8
 
-            if k==1:
-                d__f = oct
-            else:
-                d__f = oct[q:r+1]
-            for i in range(2,len(d__f)+1):  
-                if(d__f[i-1] == lg[j]):
-                    if(d__f[i-2] == 1):
-                        l1[0] += 1
-                    elif(d__f[i-2] == -1):
-                        l1[1] += 1
-                    elif(d__f[i-2] == 2):
-                        l1[2] += 1
-                    elif(d__f[i-2] == -2):
-                        l1[3] += 1
-                    elif(d__f[i-2] == 3):
-                        l1[4] += 1
-                    elif(d__f[i-2] == -3):
-                        l1[5] += 1
-                    elif(d__f[i-2] == 4):
-                        l1[6] += 1
-                    elif(d__f[i-2] == -4):
-                        l1[7] += 1 
-            #print(l0,type(lg))
-            lf = l0 + l1
-            g_df.append(lf)
-    g_df_final = pd.DataFrame(g_df).transpose()
-    g_df_final_ = pd.DataFrame(g_df_final.values[1:], columns=col)
-    #print(g_df_final_)
-    # gap between table or the data table as a dataframe is appended to the main dataframe(d)
-    x = pd.concat([d,g_df_final_],ignore_index = True)
-    return x
+                if k==1:
+                    d__f = oct
+                else:
+                    d__f = oct[q:r+1]
+                for i in range(2,len(d__f)+1):  
+                    if(d__f[i-1] == lg[j]):
+                        if(d__f[i-2] == 1):
+                            l1[0] += 1
+                        elif(d__f[i-2] == -1):
+                            l1[1] += 1
+                        elif(d__f[i-2] == 2):
+                            l1[2] += 1
+                        elif(d__f[i-2] == -2):
+                            l1[3] += 1
+                        elif(d__f[i-2] == 3):
+                            l1[4] += 1
+                        elif(d__f[i-2] == -3):
+                            l1[5] += 1
+                        elif(d__f[i-2] == 4):
+                            l1[6] += 1
+                        elif(d__f[i-2] == -4):
+                            l1[7] += 1 
+                #print(l0,type(lg))
+                lf = l0 + l1
+                g_df.append(lf)
+        g_df_final = pd.DataFrame(g_df).transpose()
+        g_df_final_ = pd.DataFrame(g_df_final.values[1:], columns=col)
+        #print(g_df_final_)
+        # gap between table or the data table as a dataframe is appended to the main dataframe(d)
+        x = pd.concat([d,g_df_final_],ignore_index = True)
+        return x
+    except:
+        print("Invalid argument was passed to the Gap Function")
 
 from platform import python_version
 ver = python_version()
