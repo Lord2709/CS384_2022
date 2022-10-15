@@ -200,6 +200,40 @@ def octant_range_names(mod=5000):
         write_in_xlsx(len(overall_rank[i]), col, overall_rank[i], ws_output)
         col += 1
     
+    AD_col = ["","Rank1 Octant ID"]
+    for i in rank_list:
+        x = i.index(min(i))
+        AD_col.append(int_l[x])
+
+    AE_col = ["","Rank1 Octant Name"]
+    for i in AD_col[2:]:
+        AE_col.append(octant_name_id_mapping[str(i)])
+    # print(AE_col)
+
+    AE_col_copy = list(AE_col[3:])
+    # print(AE_col_copy)
+    AD_col.insert(3,"")
+    AE_col.insert(3,"")
+    write_in_xlsx(len(AD_col),30,AD_col,ws_output)
+    write_in_xlsx(len(AE_col),31,AE_col,ws_output)
+
+    final_mapping = {"Internal outward interaction":0, "External outward interaction":0, "External Ejection":0, "Internal Ejection":0, "External inward interaction":0, "Internal inward interaction":0, "Internal sweep":0, "External sweep":0}
+    for item in AE_col_copy:
+        if (item in final_mapping):
+            final_mapping[item] += 1
+        else:
+            final_mapping[item] = 1
+
+    # print(final_mapping)
+    final = []
+    for i in O_col[4:]:
+        final.append(final_mapping[i])
+
+    # print(final)
+    Q_col = ["","","","Count of Rank 1 Mod Values"] + final
+    overall_count[2] += Q_col
+    write_in_xlsx(len(overall_count[2]),16,overall_count[2],ws_output)
+
     wb_output.save("octant_output_ranking_excel.xlsx")
 
 ###Code
