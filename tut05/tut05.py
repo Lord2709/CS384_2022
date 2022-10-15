@@ -87,6 +87,82 @@ def octant_range_names(mod=5000):
             if((H_col[i]>=0) & (I_col[i]<0) & (J_col[i]<0)): Oct.append(-4)
     write_in_xlsx(len_H, 11, Oct, ws_output)
 
+    L_col = ['','','','User Input']
+    write_in_xlsx(len(L_col), 12, L_col, ws_output)
+
+    M_col = ["", "Octant ID", "Overall Count",f"Mod {mod}"]
+
+    n = 30000
+    if n%mod == 0:
+        n_ranges = n//mod
+    else:
+        n_ranges = math.ceil(n/mod)
+
+
+    t = 0
+    u = t + mod
+    for j in range(n_ranges):
+        if u <= 29745:
+            if t==0:
+                M_col.append(f"0000 - {u-1}")
+            else:
+                M_col.append(f"{t} - {u-1}")
+        else:
+            M_col.append(f"{t} - {len_H - 3}")
+        t = u
+        u += mod
+    write_in_xlsx(len(M_col), 13, M_col, ws_output)
+
+    # 8 new list are created to store the count value of {+1,-2,+2,-2,+3,-3,+4,-4}
+    overall_count = []
+    e = 0
+    st = ["+1","-1","+2","-2","+3","-3","+4","-4"]
+    for i in range(8):
+        empty_list = [""]
+        empty_list.append(st[e])
+        overall_count.append(empty_list)
+        e += 1
+
+    df2 = Oct[2:]
+    int_l = [1,-1,2,-2,3,-3,4,-4]
+    j = 0
+    for i in range(8):
+        overall_count[i].append(df2.count(int_l[j]))
+        overall_count[i].append(" ")
+        j += 1
+    # n --> given in tut01.pdf that max value will never exceed 30000.
+    # Below while function is used to count the {+1,-2,+2,-2,+3,-3,+4,-4} values for different mod's
+
+    N_col = ["","","","Octant ID"] + int_l
+    O_col = ["","","","Octant Name","Internal outward interaction","External outward interaction",
+            "External Ejection","Internal Ejection","External inward interaction",
+            "Internal inward interaction","Internal sweep","External sweep"]
+
+    k = 0
+    m = mod
+    n_r = n_ranges
+    while n_r > 0:   
+        n_r -= 1
+        d_f = df2[k:m]
+        j = 0
+        for i in range(8):
+            overall_count[i].append(d_f.count(int_l[j]))
+            j += 1
+        k = m 
+        m = m + mod
+
+    overall_count[0] += N_col
+    overall_count[1] += O_col
+
+    # print(overall_count)
+    col = 14
+    for i in range(8):
+        if i == 2:
+            col += 1
+            continue
+        write_in_xlsx(len(overall_count[i]), col, overall_count[i], ws_output)
+        col += 1
+
     wb_output.save("octant_output_ranking_excel.xlsx")
 
 ###Code
