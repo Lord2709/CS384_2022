@@ -14,6 +14,14 @@ def write_in_xlsx(range_of_rows,column_number,ls,ws):
         else:
             cellref.value=ls[i-1]
 
+def calculate_rank(vector):
+    a={}
+    rank=1
+    for num in sorted(vector, reverse=True):
+        if num not in a:
+            a[num]=rank
+            rank=rank+1
+    return[a[i] for i in vector]
     
 def octant_range_names(mod=5000):
     if os.path.exists("octant_output_ranking_excel.xlsx"):
@@ -163,6 +171,35 @@ def octant_range_names(mod=5000):
         write_in_xlsx(len(overall_count[i]), col, overall_count[i], ws_output)
         col += 1
 
+    wb_output.save("octant_output_ranking_excel.xlsx")
+
+    #Rank
+    overall_rank = [[1,"Rank of 1"],[-1,"Rank of 2"],[2,"Rank of 3"],[-2,"Rank of 4"],[3,"Rank of 5"],[-3,"Rank of 6"],[4,"Rank of 7"],[-4,"Rank of 8"]]
+
+    row_list = []
+    imp_element_pos = [2] + [i for i in range(4,n_ranges+4)]
+    for i in imp_element_pos:
+        l = []
+        for j in range(8):
+            l.append(overall_count[j][i])
+        row_list.append(l)
+
+
+    rank_list = []
+    for i in range(len(row_list)):
+        rank_list.append(calculate_rank(row_list[i]))
+
+    for i in range(len(overall_rank)):
+        for j in rank_list:
+            overall_rank[i].append(j[i])
+        overall_rank[i].insert(3,"")
+        # print(overall_rank[1])
+
+    col = 22
+    for i in range(8):
+        write_in_xlsx(len(overall_rank[i]), col, overall_rank[i], ws_output)
+        col += 1
+    
     wb_output.save("octant_output_ranking_excel.xlsx")
 
 ###Code
