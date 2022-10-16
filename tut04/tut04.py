@@ -114,6 +114,9 @@ def octant_longest_subsequence_count_with_range():
             print("Code Compiled Successfully")
         except:
             print("Error : It seems that no output file has been generated.")
+            if os.path.exists("output_octant_longest_subsequence_with_range.xlsx"):
+                os.remove("output_octant_longest_subsequence_with_range.xlsx")
+            octant_longest_subsequence_count_with_range()
     except:
         print("Error in calling function")
 
