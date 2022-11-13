@@ -7,6 +7,15 @@ import datetime
 # from datetime import datetime
 start_time = datetime.datetime.now()
 
+
+global calendar_ls
+calendar_ls = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+def findDay(date):
+    day = datetime.datetime.strptime(date, '%Y-%m-%d').weekday()
+    return (calendar_ls[day])
+
+
 current_dir = os.getcwd()
 path = current_dir.replace('\\','/') + "/output/"
 
@@ -50,6 +59,17 @@ def attendance_report():
 
     unique_date = set(attendance['Date'])
     unique_date_list = list(unique_date)
+
+    total_lecture = 0
+    class_date = []
+    for i in unique_date_list:
+        day = findDay(i)
+        if day == 'Monday' or day == 'Thursday':
+            total_lecture += 1
+            class_date.append(i)
+
+    class_date.sort()
+    print(class_date)
 
 
 from platform import python_version
