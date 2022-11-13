@@ -137,6 +137,24 @@ def attendance_report():
         df_individual_file = pd.DataFrame.from_dict(individual_file_dict)
         df_individual_file.to_excel(filename1, index = False)
 
+        Overall_attendance['Roll'].append(roll[i])
+        Overall_attendance['Name'].append(name[i])
+        real = 0
+        for l in range(len(class_date)):
+            if date[class_date[l]][1] == 1:
+                Overall_attendance[class_date[l]].append('P')
+            else:
+                Overall_attendance[class_date[l]].append('A')
+            real = real + int(date[class_date[l]][1])
+        Overall_attendance['Actual Lecture Taken'].append(len(class_date))
+
+        Overall_attendance['Total Real'].append(real)
+        Overall_attendance['% Attendance'].append(round((real/len(class_date))*100,2))
+    
+
+    consolidated_file = pd.DataFrame.from_dict(Overall_attendance)
+    consolidated_file.to_excel('attendance_report_consolidated.xlsx', index = False)
+
 
 from platform import python_version
 ver = python_version()
