@@ -69,7 +69,73 @@ def attendance_report():
             class_date.append(i)
 
     class_date.sort()
-    print(class_date)
+    # print(class_date)
+
+    row1 = ["Date","Roll",'Name','Total Attendance Count','Real','Duplicate','Invalid','Absent']
+    header = ["Roll","Name"] + class_date + ["Actual Lecture Taken","Total Real","% Attendance"]
+
+    Overall_attendance = {}
+    for y in header:
+        if y not in Overall_attendance:
+            Overall_attendance[y] = []
+    
+
+    for i in range(len(roll)):
+        individual_list = []
+
+        os.chdir(path)
+        filename1 = f"{roll[i]}.xlsx"
+
+        individual_list.append(["",roll[i],name[i],"","","","",""])
+        
+        df_stud = attendance[attendance['Roll No']==roll[i]]
+        date_list = df_stud['Date'].to_list()
+        hour_list = df_stud['Hour'].to_list()
+        minutes_list = df_stud['Min'].to_list()
+        seconds_list = df_stud['Sec'].to_list()
+
+
+        date = {}
+        for j in range(len(class_date)):
+            day = [f"{class_date[j]}","",""]
+            date[class_date[j]] = [0,0,0,0,0]
+            for k in range(len(date_list)):
+                if (class_date[j] == date_list[k]):
+                    if (hour_list[k] == 14):
+                        date[class_date[j]][0] += 1
+                        if date[class_date[j]][1] < 1:
+                            date[class_date[j]][1] += 1
+                        else:
+                            date[class_date[j]][2] += 1
+                    elif (hour_list[k] == 15) and (minutes_list[k]==0) and (seconds_list[k]==0):
+                        date[class_date[j]][0] += 1
+                        if date[class_date[j]][1] < 1:
+                            date[class_date[j]][1] += 1
+                        else:
+                            date[class_date[j]][2] += 1
+                    else:
+                        date[class_date[j]][0] += 1
+                        date[class_date[j]][3] += 1
+            if date[class_date[j]][1] == 0:
+                date[class_date[j]][4] += 1
+            
+            day = day + date[class_date[j]]
+            individual_list.append(day)
+        
+
+        individual_file_dict = {}
+        for m in row1:
+            if m not in individual_file_dict:
+                individual_file_dict[m] = []
+            for z in individual_list:
+                if len(z) == 0:
+                    continue
+                individual_file_dict[m].append(z[0])
+                del z[0]
+       
+
+        df_individual_file = pd.DataFrame.from_dict(individual_file_dict)
+        df_individual_file.to_excel(filename1, index = False)
 
 
 from platform import python_version
