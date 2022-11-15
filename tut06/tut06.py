@@ -4,10 +4,50 @@ os.system("cls")
 import pandas as pd
 import numpy as np
 import datetime
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 
 # from datetime import datetime
 start_time = datetime.datetime.now()
 
+def mail():
+    fromaddr = input("Enter Email Id : ")
+    # fromaddr = "sahilchaudhari0927@gmail.com"
+    toaddr = "sahilchaudhari2709@gmail.com"
+    password = input("Enter Password : ")
+    
+    msg = MIMEMultipart()
+
+    msg['From'] = fromaddr
+    msg['To'] = toaddr
+    
+
+    msg['Subject'] = "Attendance Report Consolidated"
+    body = "My consolidated attendance report"
+    
+    msg.attach(MIMEText(body, 'plain'))
+    
+    filename = "attendance_report_consolidated.xlsx"
+    attachment = open(filename, "rb")
+
+    p = MIMEBase('application', 'octet-stream')
+    p.set_payload((attachment).read())
+    
+    encoders.encode_base64(p)
+    
+    p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    msg.attach(p)
+    
+    s = smtplib.SMTP('smtp.gmail.com', 587,timeout = 120)
+
+    s.starttls()
+    s.login(fromaddr, password)
+    text = msg.as_string()
+    s.sendmail(fromaddr, toaddr, text)
+    s.quit()
 
 global calendar_ls
 calendar_ls = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -30,7 +70,7 @@ os.mkdir(path)
 
 def attendance_report():
     try:
-        # reg_stud, attendance variables are used to store entire dataset.
+    # reg_stud, attendance variables are used to store entire dataset.
         try:
             reg_stud = pd.read_csv("input_registered_students.csv")
             attendance = pd.read_csv("input_attendance.csv")
@@ -61,7 +101,7 @@ def attendance_report():
             name.append(s[9:])
         attendance['Roll No'] = rollno
         attendance['Name'] = name
-    
+
         attendance = attendance.drop("Attendance",axis = 1)
 
         # Stored roll number and name from registered_students dataset into roll, name variable respectively
@@ -136,7 +176,7 @@ def attendance_report():
                         else:
                             date[class_date[j]][0] += 1
                             date[class_date[j]][3] += 1
-                if date[class_date[j]][1] == 0:
+                if date[class_date[j]][0] == 0:
                     date[class_date[j]][4] += 1
                 
                 day = day + date[class_date[j]]
@@ -183,6 +223,11 @@ def attendance_report():
             consolidated_file.to_excel('attendance_report_consolidated.xlsx', index = False)
         except:
             print("Error : It seems that attendance_report_consolidated file has not been generated.")
+
+        try:
+            mail()
+        except:
+            print("Error in sending Email...")
     except:
         print("Error in calling function")
 
