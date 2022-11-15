@@ -193,6 +193,69 @@ def scorecard():
 		wk_ov = f"({sum([x[3] for x in list(list_of_bowler.values())])} wkts, {line[0:4]} Ov)"
 		file1.write(f"{'Total' : <62}{total_score : ^5}{wk_ov : >2}\n")
 
+		if sum([x[3] for x in list(list_of_bowler.values())]) != 10:
+			line = f"{'Did not Bat' : <20}"
+			for i in team[team_names[0]]:
+				if i not in mapped_list_of_batter.keys():
+					if team[team_names[0]].index(i) == len(team[team_names[0]])-1:
+						line += i 
+					else:
+						line += i + ", "
+			line += "\n\n"
+			file1.write(line)
+		else: 
+			file1.write("\n")
+
+
+		if len(team_names) != 1:
+			del team_names[0]
+
+
+		file1.write("Fall of Wickets\n")
+
+		line1 = ''
+		for i in out_sequence.keys():
+			line2 = f"{out_sequence[i][0]}-{out_sequence[i][1]} ({i}, {list_of_batter[i][5]}), "
+			line1 += line2
+		line1 = line1[:len(line1)-2]
+		# print(line1)
+
+		lens = []
+		len_of_line1 = len(line1)
+		n = math.ceil(len_of_line1/len_of_string)
+		for i in range(n):
+			if len_of_line1 > len_of_string:
+				lens.append(len_of_string)
+				len_of_line1 -= len_of_string
+			else:
+				lens.append(len_of_line1)
+
+
+		line3 = []
+		x = 0
+		for i in range(len(lens)):
+			if i+1 == len(lens):
+				string = line1[x:]
+			else:
+				string = line1[x:lens[i]+x+1]
+				x += lens[i]+1
+			line3.append(string)
+			# print(line3)
+
+		for z in line3:
+			line = z+"\n"
+			file1.write(line)
+
+		line1 = f"\n{'Bowler' : <35}{'O' : ^20}{'M' : >2}{'R' : >10}{'W' : >10}{'NB' : >10}{'WD' : >10}{'ECO' : >15}\n"
+		file1.write(line1)
+		# print(list_of_bowler)
+		for i in list_of_bowler.keys():
+			line1 = f"{i : <35}{list_of_bowler[i][0] : ^20}{list_of_bowler[i][1] : >2}{list_of_bowler[i][2]+list_of_bowler[i][5] : >10}{list_of_bowler[i][3] : >10}{list_of_bowler[i][4] : >10}{list_of_bowler[i][5] : >10}{np.round(((list_of_bowler[i][2]+list_of_bowler[i][5])/list_of_bowler[i][7])*6,1) : >15}\n"
+			file1.write(line1)
+
+		file1.write(f"\n{'Powerplays' :<46}{'Overs' : ^20}{'Runs' : >46}\n")
+		file1.write(f"{'Mandatory' :<46}{'0.1-6' : ^20}{powerplay_runs : >46}\n\n")
+
 		
 
 
