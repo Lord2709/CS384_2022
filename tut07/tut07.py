@@ -255,10 +255,125 @@ def octant_analysis(mod=5000):
 		AE_col += AE_col_
 		write_in_xlsx(len(AE_col),31,AE_col,ws_output)
 
-		# ========================================== Tut05 Part End =============================================
+		# ========================================== Tut05 Part-End ===============================================
+
+		# ========================================== Tut02 Part-Start =============================================
+
+		AH_col = ['','','']
+		for i in range(n_ranges+1):
+			AH_col.append("From")
+			AH_col += ["" for i in range(13)]
+		write_in_xlsx(len(AH_col), 34, AH_col, ws_output)
+
+
+		AI_col = ["Overall Transition","","Octant #"] + st
+
+		q = 0
+		r = mod
+		nr = n_ranges
+		while nr > 0:   
+			nr -= 1
+			if r <= n:
+				if q==0:
+					p = f"{0000} - {r-1}"
+				else:
+					p = f"{q} - {r-1}"
+			else:
+				p = f"{q} - {len_H - 2}"
+			AI_col += ["","","","Mod Transition Count"]
+			AI_col.append(p)
+			AI_col.append("Octant #")
+			AI_col += st
+			q = r 
+			r = r + mod
+		write_in_xlsx(len(AI_col), 35, AI_col, ws_output)
+
+
+		# 8 new list are created to store the count value of {+1,-2,+2,-2,+3,-3,+4,-4}
+		overall_count1 = []
+		e = 0
+		for i in range(8):
+			empty_list = ["",""]
+			empty_list.append(st[e])
+			overall_count1.append(empty_list)
+			e += 1
+
+
+		for j in range(8):
+			l = [0]*8
+			d_f = df2
+			for i in range(2,len(d_f)+1):  
+				if(d_f[i-1] == int_l[j]):
+					if(d_f[i-2] == 1):
+						l[0] += 1
+					elif(d_f[i-2] == -1):
+						l[1] += 1
+					elif(d_f[i-2] == 2):
+						l[2] += 1
+					elif(d_f[i-2] == -2):
+						l[3] += 1
+					elif(d_f[i-2] == 3):
+						l[4] += 1
+					elif(d_f[i-2] == -3):
+						l[5] += 1
+					elif(d_f[i-2] == 4):
+						l[6] += 1
+					elif(d_f[i-2] == -4):
+						l[7] += 1
+			if j==0:
+				l+=["","","","","To"]
+			else:
+				l += ["" for i in range(5)]
+
+			overall_count1[j] += l  
+
+		q = 0
+		r = mod
+		n_r_ = n_ranges
+		while n_r_>0:
+			n_r_ -= 1
+			for j in range(8):
+				overall_count1[j].append(st[j])
+				l = [0]*8
+				d_f = df2[q:r+1]
+				for i in range(2,len(d_f)+1):  
+					if(d_f[i-1] == int_l[j]):
+						if(d_f[i-2] == 1):
+							l[0] += 1
+						elif(d_f[i-2] == -1):
+							l[1] += 1
+						elif(d_f[i-2] == 2):
+							l[2] += 1
+						elif(d_f[i-2] == -2):
+							l[3] += 1
+						elif(d_f[i-2] == 3):
+							l[4] += 1
+						elif(d_f[i-2] == -3):
+							l[5] += 1
+						elif(d_f[i-2] == 4):
+							l[6] += 1
+						elif(d_f[i-2] == -4):
+							l[7] += 1
+				if j==0 and (n_r_ != 0):
+					l+=["","","","","To"]
+				else:
+					l += ["" for i in range(5)]
+
+				overall_count1[j] += l  
+			q = r 
+			r += mod
+
+		col = 36
+		for i in range(8):
+			write_in_xlsx(len(overall_count1[i]), col, overall_count1[i], ws_output)
+			col += 1
+		ws_output.cell(row=2, column=36).value = "To"
+
+		# ========================================== Tut02 Part-End ===============================================
+
 		output_file_name = f.split(".xlsx")[0] + f"_octant_analysis_mod_{mod}" + ".xlsx"
 		wb_output.save(output_file_name)
-		print(f"{output_file_name} compiled successfully")
+		print(f"{output_file_name} file compiled successfully")
 
 ##Read all the excel files in a batch format from the input/ folder. Only xlsx to be allowed
 ##Save all the excel files in a the output/ folder. Only xlsx to be allowed
