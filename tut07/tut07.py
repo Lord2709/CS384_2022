@@ -3,6 +3,9 @@ import os
 os.system('cls')
 import math
 import numpy as np
+from openpyxl.styles import Alignment,Border, Side, PatternFill
+from openpyxl.formatting.rule import CellIsRule
+from openpyxl.utils import get_column_letter
 
 from datetime import datetime
 start_time = datetime.now()
@@ -42,6 +45,13 @@ def calculate_rank(vector):
             a[num]=rank
             rank=rank+1
     return[a[i] for i in vector]
+
+
+def set_border(ws, cell_range):
+    thin = Side(border_style="thin", color="000000")
+    for row in ws[cell_range]:
+        for cell in row:
+            cell.border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
 #Help
 def octant_analysis(mod=5000):
@@ -438,6 +448,25 @@ def octant_analysis(mod=5000):
 
 		# ========================================== Tut04 Part-End ===================================================
 
+		# ========================================== Border - Start ==================================================
+
+		set_border(ws_output, f'N3:AF{n_ranges+4}')
+		set_border(ws_output, f'AC{n_ranges+6}:AE{n_ranges+14}')
+		set_border(ws_output, 'AS3:AU11')
+
+		column_start = 'AI'
+		column_end = 'AQ'
+		x = 3
+		for i in range(n_ranges+1):
+			start = column_start + f'{x}'
+			end = column_end + f'{x+8}'
+			set_border(ws_output, f'{start}:{end}')
+			# print(start,end)
+			x += 14
+
+		y = sum(g3_) + 19
+		set_border(ws_output, f'AW3:AY{y}')
+		# ============================================ Border - End ==================================================
 		output_file_name = f.split(".xlsx")[0] + f"_octant_analysis_mod_{mod}" + ".xlsx"
 		wb_output.save(output_file_name)
 		print(f"{output_file_name} file compiled successfully")
