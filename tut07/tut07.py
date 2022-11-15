@@ -369,8 +369,68 @@ def octant_analysis(mod=5000):
 			col += 1
 		ws_output.cell(row=2, column=36).value = "To"
 
-		# ========================================== Tut02 Part-End ===============================================
+		# ========================================== Tut02 Part-End =================================================
 
+		# ========================================== Tut03 Part-Start ===============================================
+
+		g1 = ["Longest Subsquence Length"," ","Octant ##","+1","-1","+2","-2","+3","-3","+4","-4"]
+		g2 = ["","","Longest Subsquence Length"]
+		g2_ = []
+		g3 = ["","","Count"]
+		g3_ = []
+
+		oct = Oct[2:]
+		T = []
+		for col in ws_output['A']:
+			T.append(col.value)
+		time1 = T[2:]
+		n = len_H - 2
+
+		'''count1 to store initial count and previous_count is used to store 
+        previous count as the count value keeps on changing.'''
+		for j in int_l:
+			count1 = 0
+			prev = 0
+			indexend = 0
+			for i in range(n):
+				if(oct[i] == j):
+					count1 += 1
+				else:
+					if(count1 > prev):
+						prev = count1
+						indexend = i
+					count1 = 0
+        	# c is used to store total number of times the small longest subsequence occurs
+			c = 0
+			count2 = 0
+			for i in range(n):
+				if(oct[i] != j):
+					count2 = 0
+				else:
+					count2 += 1
+					if(count2 == prev):
+						c+=1
+						count2 = 0
+            #print(prev, c)
+			g2_.append(prev)
+			g3_.append(c)
+        
+        #print(g2_,g3_)
+		g2 = g2 + g2_
+		g3 = g3 + g3_
+
+        # 2d list to store entire small longest subsequence table
+		g_final = []
+		g_final.append(g1)
+		g_final.append(g2)
+		g_final.append(g3)
+
+		col = 45
+		for i in range(3):
+			write_in_xlsx(len(g_final[i]), col, g_final[i], ws_output)
+			col += 1
+
+		# ========================================== Tut03 Part-End =================================================
 		output_file_name = f.split(".xlsx")[0] + f"_octant_analysis_mod_{mod}" + ".xlsx"
 		wb_output.save(output_file_name)
 		print(f"{output_file_name} file compiled successfully")
