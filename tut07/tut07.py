@@ -430,10 +430,98 @@ def octant_analysis(mod=5000):
 			write_in_xlsx(len(g_final[i]), col, g_final[i], ws_output)
 			col += 1
 
-		# ========================================== Tut03 Part-End =================================================
+		# ========================================== Tut03 Part-End ===================================================
+		
+		# ========================================== Tut04 Part-Start =================================================
+
+		tut_04(n,time1,oct,int_l,g3_,ws_output)
+
+		# ========================================== Tut04 Part-End ===================================================
+
 		output_file_name = f.split(".xlsx")[0] + f"_octant_analysis_mod_{mod}" + ".xlsx"
 		wb_output.save(output_file_name)
 		print(f"{output_file_name} file compiled successfully")
+
+
+def tut_04(n,time1,oct,int_l,g3_,ws_output):
+	dk = []
+	# g0,g1,g2,g3 are the list created which will store the values of the column 
+	x = sum(g3_) + 18
+	# g0 = [" " for i in range(x)]
+	g1 = ["Longest Subsquence Length with Range","","Octant ###"]
+	l_ = ["+1","-1","+2","-2","+3","-3","+4","-4"]
+	for i in range(len(l_)):
+		g1.append(l_[i])
+		g1.append("Time")
+		gap = [" " for _ in range(g3_[i])]
+		g1 = g1 + gap
+
+	g2 = ["","","Longest Subsquence Length"]
+	g3 = ["","","Count"]
+	k0 = []
+	k1 = []
+	l_0 = []
+	l_1 = []
+
+	for j in int_l:
+		count1 = 0
+		prev = 0
+		for i in range(n):
+			if(oct[i] == j):
+				count1 += 1
+			else:
+				if(count1 > prev):
+					prev = count1
+					indexend = i
+				count1 = 0
+		c = 0
+		count2 = 0
+		indexend = 0
+		l0 = []
+		l1 = []   
+		for i in range(n):
+			if(oct[i] != j):
+				count2 = 0
+			else:
+				count2 += 1
+			if(count2 == prev):
+				c+=1
+				count2 = 0
+				indexend = i
+				l0.append(indexend-prev+1)
+				l1.append(indexend)
+			#print(prev, c)
+		l_0.append(l0)
+		l_1.append(l1)
+		k0.append(prev)
+		k1.append(c)
+	
+	for j in range(8):
+		g2.append(k0[j])
+		g2.append("From")
+		z1 = l_0[j]
+		for p in range(len(z1)):
+			t = time1[z1[p]]
+			g2.append(t)
+
+	for j in range(8):
+		g3.append(k1[j])
+		g3.append("To")
+		z2 = l_1[j]
+		for p in range(len(z2)):
+			t = time1[z2[p]]
+			g3.append(t)
+			
+
+	dk.append(g1)
+	dk.append(g2)
+	dk.append(g3)
+
+	col = 49
+	for i in range(3):
+		write_in_xlsx(len(dk[i]), col, dk[i], ws_output)
+		col += 1
+
 
 ##Read all the excel files in a batch format from the input/ folder. Only xlsx to be allowed
 ##Save all the excel files in a the output/ folder. Only xlsx to be allowed
