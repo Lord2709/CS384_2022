@@ -53,6 +53,31 @@ def set_border(ws, cell_range):
         for cell in row:
             cell.border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
+def bgcolor(range,ws):
+	fill = PatternFill(start_color='FFFF00',end_color='FFFF00',fill_type='solid')
+	ws.conditional_formatting.add(range, CellIsRule(operator='equal', formula=[1], fill=fill))
+
+def max_color(range1,ws):
+	fill = PatternFill(start_color='FFFF00',end_color='FFFF00',fill_type='solid')
+
+	max_list = []
+
+	for row in ws[range1]:
+		list_row_val = []
+		for cell in row:
+			list_row_val.append(cell.value)
+		max_list.append(max(list_row_val))
+
+	for row in ws[range1]:
+		for cell in row:
+			if cell.value == max_list[0]:
+				cell.fill = fill
+				if len(max_list) != 0:
+					del max_list[0]
+				break
+			else:
+				continue
+
 #Help
 def octant_analysis(mod=5000):
 	files = os.listdir(input_path)
@@ -467,6 +492,22 @@ def octant_analysis(mod=5000):
 		y = sum(g3_) + 19
 		set_border(ws_output, f'AW3:AY{y}')
 		# ============================================ Border - End ==================================================
+
+		# ============================================ Bgcolor - Start ===============================================
+
+		bgcolor('W4:AD10',ws_output)
+		column_start = 'AJ'
+		column_end = 'AQ'
+		x = 4
+		for i in range(n_ranges+1):
+			start = column_start + f'{x}'
+			end = column_end + f'{x+7}'
+			max_color(f'{start}:{end}', ws_output)
+			# print(start,end)
+			x += 14
+
+		# ============================================ Bgcolor - End =================================================
+
 		output_file_name = f.split(".xlsx")[0] + f"_octant_analysis_mod_{mod}" + ".xlsx"
 		wb_output.save(output_file_name)
 		print(f"{output_file_name} file compiled successfully")
