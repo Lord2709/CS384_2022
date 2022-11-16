@@ -15,8 +15,7 @@ start_time = datetime.datetime.now()
 
 def mail():
     fromaddr = input("Enter Email Id : ")
-    # fromaddr = "sahilchaudhari0927@gmail.com"
-    toaddr = "sahilchaudhari2709@gmail.com"
+    toaddr = "cs3842022@gmail.com"
     password = input("Enter Password : ")
     
     msg = MIMEMultipart()
@@ -25,8 +24,8 @@ def mail():
     msg['To'] = toaddr
     
 
-    msg['Subject'] = "Attendance Report Consolidated"
-    body = "My consolidated attendance report"
+    msg['Subject'] = "Consolidated Attendance Report"
+    body = '''Dear Sir,\nPlease find attached \"Consolidated Attendance Report\".\n\nWarm Regards,\nSahil Chaudhari, 2001MM29'''
     
     msg.attach(MIMEText(body, 'plain'))
     
