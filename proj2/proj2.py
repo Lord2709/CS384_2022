@@ -781,7 +781,7 @@ try:
 
         global radio
         try:
-            image = Image.open(r"C:\Users\Sahil\Desktop\Practice\proj2\Proj_2.jpg")
+            image = Image.open("Proj_2_IMG.jpg")
         except:
             print("Error in opening image.")
 
