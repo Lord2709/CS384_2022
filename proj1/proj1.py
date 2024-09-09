@@ -1,24 +1,18 @@
+from gui import ChatApp
 
 from datetime import datetime
 start_time = datetime.now()
 
-#Help
-def proj_chat_tool():
-	pass
 
+def main():
+    try:
+        app = ChatApp()  # Initialize the ChatApp
+        app.run()        # Run the ChatApp
+    except Exception as e:
+        print(f"Error starting the application: {e}")
 
-###Code
-
-from platform import python_version
-ver = python_version()
-
-if ver == "3.8.10":
-	print("Correct Version Installed")
-else:
-	print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
-
-
-proj_chat_tool()
+if __name__ == "__main__":
+    main()
 
 
 

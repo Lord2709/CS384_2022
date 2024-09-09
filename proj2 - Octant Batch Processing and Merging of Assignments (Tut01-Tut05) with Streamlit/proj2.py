@@ -19,6 +19,9 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from zipfile import ZipFile
 from os.path import basename
+import requests
+from PIL import Image
+from io import BytesIO
 
 
 from datetime import datetime
@@ -273,13 +276,13 @@ try:
             # Calculating U,V,W average and storing in the output file 
             ws_output['E1'].value = " "
             ws_output['E2'].value = "U Avg"
-            ws_output['E3'].value = np.round_(np.mean(output[1]), decimals = 3)
+            ws_output['E3'].value = np.round(np.mean(output[1]), decimals = 3)
             ws_output['F1'].value = " "
             ws_output['F2'].value = "V Avg"
-            ws_output['F3'].value = np.round_(np.mean(output[2]), decimals = 3)
+            ws_output['F3'].value = np.round(np.mean(output[2]), decimals = 3)
             ws_output['G1'].value = " "
             ws_output['G2'].value = "W Avg"
-            ws_output['G3'].value = np.round_(np.mean(output[3]), decimals = 3)
+            ws_output['G3'].value = np.round(np.mean(output[3]), decimals = 3)
             # =====================================================
 
 
@@ -291,9 +294,9 @@ try:
             I_col = [" ","V'=V-V Avg"]
             J_col = [" ","W'=W-W Avg"]
             for i in range(len(H)):
-                H_col.append(np.round_((H[i]), decimals = 3))
-                I_col.append(np.round_((I[i]), decimals = 3))
-                J_col.append(np.round_((J[i]), decimals = 3))
+                H_col.append(np.round((H[i]), decimals = 3))
+                I_col.append(np.round((I[i]), decimals = 3))
+                J_col.append(np.round((J[i]), decimals = 3))
         
             len_H = len(H_col)
             write_in_xlsx(len_H, 8, H_col, ws_output)
@@ -780,17 +783,28 @@ try:
     def proj_octant_gui():
 
         global radio
+        image = None
+        image_url = "https://raw.githubusercontent.com/Lord2709/CS384_2022/main/proj2%20-%20Octant%20Batch%20Processing%20and%20Merging%20of%20Assignments%20(Tut01-Tut05)%20with%20Streamlit/Proj_2_IMG.jpg"
+    
         try:
-            image = Image.open("Proj_2_IMG.jpg")
-        except:
-            print("Error in opening image.")
+            # Fetch the image from the URL
+            response = requests.get(image_url)
+            response.raise_for_status()  # Raise an error for bad status codes
+            image = Image.open(BytesIO(response.content))
+        except Exception as e:
+            st.error(f"Error in opening image: {e}")
 
-        st.image(image)
+        # Only display the image if it was successfully loaded
+        if image:
+            st.image(image)
+        else:
+            st.warning("No image available to display.")
 
         col1, col2, col3 = st.columns([1,1,1])
         with col1:
             pass
-        radio = col2.radio(label="Select Input Category", options=['Single xlsx file', 'Bulk Conversion'])
+        with col2:
+            radio = st.radio(label="Select Input Category", options=["Single xlsx file", "Bulk Conversion"], index = None)
         with col3:
             pass
 
